@@ -14,7 +14,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import MapScreen from '../screens/MapScreen';
+import HospitalScreen from '../screens/HospitalScreen';
+import PharmacyScreen from '../screens/PharmacyScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -57,21 +58,21 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Map"
+      initialRouteName="Pharmacy"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="Map"
-        component={MapScreen}
-        options={({ navigation }: RootTabScreenProps<'Map'>) => ({
+        name="Pharmacy"
+        component={PharmacyScreen}
+        options={({ navigation }: RootTabScreenProps<'Pharmacy'>) => ({
           title: 'Eczane',
           tabBarIcon: ({ color }) => <TabBarIcon name="hospital-o" color={color} />,
         })}
       />
       <BottomTab.Screen
-        name="MapPharmacy"
-        component={MapScreen}
+        name="Hospital"
+        component={HospitalScreen}
         options={{
           title: 'Hastane',
           tabBarIcon: ({ color }) => <TabBarIcon name="hospital-o" color={color} />,

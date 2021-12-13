@@ -15,9 +15,14 @@ const linking: LinkingOptions<RootStackParamList> = {
     screens: {
       Root: {
         screens: {
-          Map: {
+          Pharmacy: {
             screens: {
-              MapScreen: 'map',
+              PharmacyScreen: 'pharmacy',
+            },
+          },
+          Hospital: {
+            screens: {
+              HospitalScreen: 'hospital',
             },
           },
         },
