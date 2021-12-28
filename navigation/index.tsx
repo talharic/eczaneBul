@@ -67,7 +67,7 @@ function BottomTabNavigator() {
         component={PharmacyScreen}
         options={({ navigation }: RootTabScreenProps<'Pharmacy'>) => ({
           title: 'Eczane',
-          tabBarIcon: ({ color }) => <TabBarIcon name="hospital-o" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="medkit" color={color} />,
         })}
       />
       <BottomTab.Screen
