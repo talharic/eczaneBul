@@ -20,7 +20,10 @@ export default function MapScreen(props: { term: string }) {
       setLocation(loc);
       if(term.toLowerCase() == "pharmacy" && new Date().getHours() >= 18) { 
         getPharmacyOnDuty(loc.coords.latitude, loc.coords.longitude);
-      } else getPlaces(loc.coords.latitude, loc.coords.longitude, term);
+      } else {
+        pharmacies.length && setPharmacies([]);
+        getPlaces(loc.coords.latitude, loc.coords.longitude, term);
+      }
     })();
   }, []);
 
