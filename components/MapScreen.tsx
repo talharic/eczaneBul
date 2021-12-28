@@ -48,7 +48,7 @@ export default function MapScreen(props: { term: string }) {
   function getPlaces(latitude: any, longitude: any, keyword: string){
     let parameters: any = {
       location: `${latitude},${longitude}`,
-      radius: 5000,
+      radius: 8000,
       keyword: keyword,
       key: "AIzaSyBvJdlk21u2NUmvJVHdVNxqOMeZOlOTMpc"
     }
