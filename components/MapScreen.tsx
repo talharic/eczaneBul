@@ -12,6 +12,7 @@ export default function MapScreen(props: { term: string }) {
   const [markers, setMarkers] = React.useState([]);
   const [pharmacies, setPharmacies] = React.useState([]);
   const [destination, setDestination] = React.useState({latitude: 0, longitude: 0});
+  const [distance, setDistance] = React.useState('');
   const {term} = props;
 
   React.useEffect(() => {
@@ -66,6 +67,7 @@ export default function MapScreen(props: { term: string }) {
   async function showDirectionToClosest(){
     if(destination.latitude != 0 && destination.longitude != 0){
       setDestination({latitude: 0, longitude: 0});
+      setDistance('');
       return;
     }
     let parameters: any = {
@@ -80,20 +82,20 @@ export default function MapScreen(props: { term: string }) {
     let result : any = [];
     let url = "https://maps.googleapis.com/maps/api/distancematrix/json?" + Object.keys(parameters).map(key => `${key}=${parameters[key]}`).join("&");
     await fetch(url).then(res => res.json()).then(data => result = data["rows"][0]["elements"]).catch(error => console.log(error));
-    let index = 0, distance = result[0]["distance"]["value"];
+    let index = 0, distance = result[0]["distance"]["value"], text = result[0]["distance"]["text"];
     for(let i = 1; i < result.length; i++) {
       if(result[i]["distance"]["value"] < distance){
         distance = result[i]["distance"]["value"];
+        text = result[i]["distance"]["text"];
         index = i
       }
     }
-    if(index != -1) {
-      parameters["destinations"] = parameters["destinations"].split("|").map((item : any) => item.split(","));
-      setDestination({
-        latitude: parseFloat(parameters["destinations"][index][0]),
-        longitude: parseFloat(parameters["destinations"][index][1])
-      });
-    }
+    parameters["destinations"] = parameters["destinations"].split("|").map((item : any) => item.split(","));
+    setDestination({
+      latitude: parseFloat(parameters["destinations"][index][0]),
+      longitude: parseFloat(parameters["destinations"][index][1])
+    });
+    setDistance(text);
   }
 
   return (
@@ -118,7 +120,7 @@ export default function MapScreen(props: { term: string }) {
             })
         }
         
-        {destination.latitude !=0 && destination.longitude != 0 && (<MapViewDirections
+        {distance != '' && (<MapViewDirections
             origin={location.coords}
             destination={destination}
             apikey={"AIzaSyBvJdlk21u2NUmvJVHdVNxqOMeZOlOTMpc"}
@@ -130,7 +132,10 @@ export default function MapScreen(props: { term: string }) {
             }}
           />)}
       </MapView>
-      <FAB buttonColor="black" iconTextColor="#FFFFFF" onClickAction={showDirectionToClosest} visible={true} iconTextComponent={<FontAwesome size={30} style={{ marginBottom: -3 }} name={destination.latitude != 0 && destination.longitude != 0 ? "close" : "road"} />} />
+      {distance != '' && <View style={styles.kmText}>
+        <Text>{distance}</Text>
+      </View>}
+      <FAB buttonColor="black" iconTextColor="#FFFFFF" onClickAction={showDirectionToClosest} visible={true} iconTextComponent={<FontAwesome size={30} style={{ marginBottom: -3 }} name={distance != '' ? "close" : "road"} />} />
     </View>
   );
 }
@@ -144,4 +149,12 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  kmText: {
+    backgroundColor: "black",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginBottom: 20,
+    fontSize: 18,
+    borderRadius: 600
+  }
 });
