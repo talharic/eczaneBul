@@ -103,7 +103,7 @@ export default function MapScreen(props: { term: string }) {
       <MapView
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        showsUserLocation={true} //konumumuzu mavi olarak gösteriyor
+        showsUserLocation={true}
         region={{
           latitude: location.coords.latitude,
           longitude: location.coords.longitude,
@@ -124,6 +124,7 @@ export default function MapScreen(props: { term: string }) {
             origin={location.coords}
             destination={destination}
             apikey={"AIzaSyBvJdlk21u2NUmvJVHdVNxqOMeZOlOTMpc"}
+            lineDashPattern={[0]}
             strokeWidth={3}
             strokeColor="blue"
             optimizeWaypoints={true}
