@@ -23,7 +23,7 @@ export default function MapScreen(props: { term: string }) {
       }
       var loc = await Location.getCurrentPositionAsync({})
       setLocation(loc);
-      if(term.toLowerCase() == "pharmacy" && new Date().getHours() >= 18) { 
+      if(term.toLowerCase() == "pharmacy" && (new Date().getHours() >= 18 || new Date().getHours() < 8 || !new Date().getDay())) { 
         getPharmacyOnDuty(loc.coords.latitude, loc.coords.longitude);
       } else {
         pharmacies.length && setPharmacies([]);
@@ -128,13 +128,10 @@ export default function MapScreen(props: { term: string }) {
             strokeWidth={3}
             strokeColor="blue"
             optimizeWaypoints={true}
-            onStart={(params) => {
-              console.log(`Started routing between "${params.origin}" and "${params.destination}"`);
-            }}
           />)}
       </MapView>
-      {distance != '' && <View style={styles.kmText}>
-        <Text>{distance}</Text>
+      {distance != '' && <View style={styles.kmButton}>
+        <Text style={styles.kmText}>{distance}</Text>
       </View>}
       <FAB buttonColor="black" iconTextColor="#FFFFFF" onClickAction={showDirectionToClosest} visible={true} iconTextComponent={<FontAwesome size={30} style={{ marginBottom: -3 }} name={distance != '' ? "close" : "road"} />} />
     </View>
@@ -150,12 +147,15 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
-  kmText: {
+  kmButton: {
     backgroundColor: "black",
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginBottom: 20,
     fontSize: 18,
     borderRadius: 600
+  },
+  kmText: {
+    color: "white",
   }
 });
